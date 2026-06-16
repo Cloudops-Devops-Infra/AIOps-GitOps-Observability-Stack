@@ -24,3 +24,11 @@ An automated, local DevOps CI/CD pipeline built from scratch. This pipeline orch
 ## 🔮 Future Roadmap
 * **Full-Stack Serverless Integration:** Expand the pipeline to deploy a serverless backend incorporating **AWS Lambda, API Gateway, and DynamoDB** within the local Floci environment.
 * **Infrastructure as Code (IaC):** Integrate Terraform or AWS SAM templates to fully automate the provisioning of the local cloud infrastructure.
+
+## 📊 Proof of Work
+
+### Automated Jenkins Pipeline Success
+![Jenkins Pipeline](./jenkins-pipeline.png)
+
+### Live Application Hosted via Local S3 Bucket Emulator
+![Live Application](./live-app.png)
