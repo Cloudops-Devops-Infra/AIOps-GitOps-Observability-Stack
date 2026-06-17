@@ -40,7 +40,7 @@
         stage('Deploy to Floci S3') {
             steps {
                 echo 'Deploying website to local Floci S3 bucket...'
-                sh "aws --endpoint-url=http://host.docker.internal:4566 s3 sync build/ s3://jenkins-serverless-react-cicd-bucket --acl public-read"
+                sh "aws --endpoint-url=http://host.docker.internal:4566 s3 sync build/ s3://jenkins-serverless-react-cicd-bucket-v2 --acl public-read"
             }
         }
     }
