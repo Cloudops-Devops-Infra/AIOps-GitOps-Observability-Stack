@@ -46,7 +46,7 @@ Plaintext
 ├── main.tf               # Terraform configuration declaring the S3 infrastructure blueprint
 ├── Jenkinsfile           # Enterprise declarative multi-stage automation script
 └── README.md             # Comprehensive architecture and engineering documentation
-Note: The React application source code (package.json, src/) is systematically cloned into a transient sandbox directory (/app) during runtime execution to maintain structural boundary isolation between platform code and application business logic.
+💡 Note: The React application source code (package.json, src/) is systematically cloned into a transient sandbox directory (/app) during runtime execution to maintain structural boundary isolation between platform code and application business logic.
 
 ⚙️ Automated Pipeline Stages
 1. Checkout Code
@@ -60,6 +60,13 @@ Deploys a portable Node.js execution runtime directly inside the pipeline. Isola
 
 4. Deploy to Floci S3
 Instantiates the AWS CLI delivery layer, overrides global routing variables to map directly onto the internal Docker container proxy matrix (host.docker.internal), and standardizes cross-directory synchronization, moving the React frontend static layers directly into the provisioned bucket.
+
+🖼️ Pipeline Visual Verification
+Jenkins Automation Stage View
+Below is the validated proof execution showing the entire declarative orchestration pipeline passing with a clean, consecutive green metrics state:
+
+Live Cloud-Hosted Application
+The application running perfectly, hosted directly out of the code-defined, path-routed emulated Amazon S3 bucket instance:
 
 💡 Real-World Engineering Roadblocks Overcome
 Building an automated pipeline from scratch exposes classic architectural challenges. Below are the design hurdles resolved during engineering:
@@ -99,3 +106,5 @@ Select New Item -> Create a Pipeline named Website-Deployment-Pipeline.
 Scroll to the Pipeline configuration section, change the definition to Pipeline script, and paste the contents of the Jenkinsfile present in this repository.
 
 Hit Save and click Build Now.
+
+Developed by Subash Patra — Associate Cloud Engineer
