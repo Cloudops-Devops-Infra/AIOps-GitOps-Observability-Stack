@@ -2,42 +2,44 @@
     agent any
 
     environment {
-        // Point Terraform to the Windows host emulator network
         TF_VAR_aws_endpoint = 'http://host.docker.internal:4566'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                checkout scm
+                git branch: 'main', url: 'https://github.com/Cloudops-Devops-Infra/jenkins-serverless-react-cicd.git'
             }
         }
 
         stage('Infrastructure Provisioning') {
-            agent {
-                docker { image 'hashicorp/terraform:latest' }
-            }
             steps {
-                sh 'terraform init'
-                sh 'terraform apply -auto-approve'
+                echo 'Setting up Terraform binary...'
+                sh '''
+                    if [ ! -f ./terraform ]; then
+                        curl -fsSL -o terraform.zip https://releases.hashicorp.com/terraform/1.9.0/terraform_1.9.0_linux_amd64.zip
+                        unzip -o terraform.zip
+                        rm terraform.zip
+                        chmod +x ./terraform
+                    fi
+                '''
+                sh './terraform init'
+                sh './terraform apply -auto-approve'
             }
         }
 
         stage('Build Website') {
-            agent {
-                docker { image 'node:18-alpine' }
-            }
             steps {
+                echo 'Installing dependencies...'
                 sh 'npm install'
-                sh 'unset CI && npm run build'
+                echo 'Compiling the website...'
+                sh 'export NODE_OPTIONS=--openssl-legacy-provider && export PUBLIC_URL=. && npm run build'
             }
         }
 
         stage('Deploy to Floci S3') {
-            agent {
-                docker { image 'amazon/aws-cli:latest' }
-            }
             steps {
+                echo 'Deploying website to local Floci S3 bucket...'
                 sh "aws --endpoint-url=http://host.docker.internal:4566 s3 sync build/ s3://jenkins-serverless-react-cicd-bucket --acl public-read"
             }
         }
