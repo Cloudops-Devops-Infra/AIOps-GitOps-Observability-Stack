@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # 1. CI/CD Orchestrator Engine
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+
+  # 2. Local AWS Cloud Emulator
+  floci:
+    image: floci/floci:latest
+    container_name: floci
+    ports:
+      - "4566:4566"
+    environment:
+      - DEBUG=1
+
+  # 3. Telemetry Scraper DB
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # 4. Metric Analytics Dashboard
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+
+volumes:
+  jenkins_data:
